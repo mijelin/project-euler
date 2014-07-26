@@ -6,6 +6,7 @@ import java.util.Iterator;
  *  @author Michelle Lin
  */
 
+// Implemented in Java to take advantage of HashSet data structure.
 public class p001 {
 
     private final static int MULT00 = 3;
