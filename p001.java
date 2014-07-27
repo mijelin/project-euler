@@ -6,7 +6,7 @@ import java.util.Iterator;
  *  @author Michelle Lin
  */
 
-// Implemented in Java to take advantage of HashSet data structure.
+// Implemented in Java to take advantage of HashSet data structure
 public class p001 {
 
     private final static int MULT00 = 3;
@@ -21,7 +21,7 @@ public class p001 {
         System.out.printf("Sum is: %d \n", sum(nums));
     }
 
-    /** Adds all multiples of FACTOR [1, UPPERBOUND) to SET. */
+    /** Adds all multiples of FACTOR in range [1, UPPERBOUND) to SET. */
     private static void multiples(HashSet<Integer> set, int factor, int upperBound) {
         for (int i = 1; i < upperBound; i += 1) {
             if (i % factor == 0) { set.add(i); }
