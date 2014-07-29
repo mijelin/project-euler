@@ -36,7 +36,7 @@ public class p003 {
     /** Returns true iff N is prime. */
     private static boolean isPrime(long n) {
         int upperBound = (int) Math.ceil(Math.sqrt((double) n));
-        for (long i = 2; i < upperBound; i += 1) {
+        for (long i = 2; i <= upperBound; i += 1) {
             // possible speedup by sieving through factors here?
             if (n % i == 0) { return false; }
         }
