@@ -59,8 +59,10 @@ public class p008 {
     private static final long DIGITS = 13;
 
     public static void main(String[] ignored) {
+        long start = System.nanoTime();
         ArrayList<String> filtered = checkLength(splitOnZeros(NUMBER));
         System.out.printf("The product is %d\n", greatestProduct(filtered));
+        System.out.printf("Method took %d ns\n", System.nanoTime() - start);
     }
 
     /** Returns an array of substrings of STR, split on the '0' character. */
@@ -74,7 +76,6 @@ public class p008 {
         for (String str : arr) {
             if (str.length() >= DIGITS) {
                 lst.add(str);
-                System.out.println(str);
             }
         }
         return lst;
