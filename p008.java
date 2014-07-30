@@ -30,8 +30,6 @@ import java.util.ArrayList;
  * @author Michelle Lin
  */
 
-// NON-WORKING; USING DP MAY SPEED UP COMPUTATION
-
 // Greatest product should not have 0 as a multiplier; split on 0s
 public class p008 {
 
@@ -93,12 +91,10 @@ public class p008 {
 
     /** Returns the largest product of DIGIT adjacent numbers in STR. */
     public static long findProduct(String str) {
-        System.out.printf("String is %s\n", str);
         long maxProduct = 1;
-        for (int offset = 0; offset < str.length() - DIGITS; offset += 1) {
+        for (int offset = 0; offset <= str.length() - DIGITS; offset += 1) {
             long product = 1;
             for (int i = 0; i < DIGITS; i += 1) {
-                System.out.printf("Product is %d\n", product);
                 product *= Character.getNumericValue(str.charAt(i + offset));
             }
             maxProduct = Math.max(maxProduct, product);
