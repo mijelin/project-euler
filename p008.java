@@ -1,3 +1,5 @@
+package euler;
+
 import java.util.ArrayList;
 
 /** LARGEST PRODUCT IN A SERIES
@@ -28,6 +30,8 @@ import java.util.ArrayList;
  * @author Michelle Lin
  */
 
+// NON-WORKING; USING DP MAY SPEED UP COMPUTATION
+
 // Greatest product should not have 0 as a multiplier; split on 0s
 public class p008 {
 
@@ -54,7 +58,7 @@ public class p008 {
                                          + "71636269561882670428252483600823257530420752963450";
 
     /** Number of adjacent digits used to form product. */
-    private static final int DIGITS = 13;
+    private static final long DIGITS = 13;
 
     public static void main(String[] ignored) {
         ArrayList<String> filtered = checkLength(splitOnZeros(NUMBER));
@@ -79,8 +83,8 @@ public class p008 {
     }
 
     /** Returns the greatest product found by multiplying DIGIT adjacent digits. */
-    public static int greatestProduct(ArrayList<String> lst) {
-        int product = 0;
+    public static long greatestProduct(ArrayList<String> lst) {
+        long product = 0;
         for (String str : lst) {
             product = Math.max(product, findProduct(str));
         }
@@ -88,16 +92,17 @@ public class p008 {
     }
 
     /** Returns the largest product of DIGIT adjacent numbers in STR. */
-    public static int findProduct(String str) {
-        int maxProduct = 1;
+    public static long findProduct(String str) {
+        System.out.printf("String is %s\n", str);
+        long maxProduct = 1;
         for (int offset = 0; offset < str.length() - DIGITS; offset += 1) {
-            int product = 1;
+            long product = 1;
             for (int i = 0; i < DIGITS; i += 1) {
+                System.out.printf("Product is %d\n", product);
                 product *= Character.getNumericValue(str.charAt(i + offset));
             }
             maxProduct = Math.max(maxProduct, product);
         }
-        System.out.println("maxproduct is " + maxProduct);
         return maxProduct;
     }
 }
