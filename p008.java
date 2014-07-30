@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * @author Michelle Lin
  */
 
-// Greatest product should not have 0 as a multiplier; split on 0s
+// Memoized computation offers ~3.5x speedup over naive.
 public class p008 {
 
     /** 1000-digit number provided as basis for the problem. */
@@ -56,17 +56,33 @@ public class p008 {
                                          + "71636269561882670428252483600823257530420752963450";
 
     /** Number of adjacent digits used to form product. */
-    private static final long DIGITS = 13;
+    private static final int DIGITS = 13;
 
     public static void main(String[] ignored) {
-        long start = System.nanoTime();
+        long naiveSoln; long memoizedSoln;
+        long start; long naiveTime; long memoizedTime;
+
         ArrayList<String> filtered = checkLength(splitOnZeros(NUMBER));
-        System.out.printf("The product is %d\n", greatestProduct(filtered));
-        System.out.printf("Method took %d ns\n", System.nanoTime() - start);
+
+        // Naive computation
+        start = System.nanoTime();
+        naiveSoln = greatestProduct(filtered, false);
+        naiveTime = System.nanoTime() - start;
+
+        // Memoized computation
+        start = System.nanoTime();
+        memoizedSoln = greatestProduct(filtered, true);
+        memoizedTime = System.nanoTime() - start;
+
+        assert naiveSoln == memoizedSoln : "Methods returned different answers!";
+
+        System.out.printf("Naive method took %d ns and returned %d\n", naiveTime, naiveSoln);
+        System.out.printf("Memoized method took %d ns and returned %d\n", memoizedTime, memoizedSoln);
     }
 
     /** Returns an array of substrings of STR, split on the '0' character. */
     public static String[] splitOnZeros(String str) {
+        /** Greatest product should not include 0 as a multiplier. */
         return str.split("0");
     }
 
@@ -81,11 +97,16 @@ public class p008 {
         return lst;
     }
 
-    /** Returns the greatest product found by multiplying DIGIT adjacent digits. */
-    public static long greatestProduct(ArrayList<String> lst) {
+    /** Returns the greatest product found by multiplying DIGIT adjacent digits.
+     *  Uses memoized computation method if MEMOIZED, naive method otherwise. */
+    public static long greatestProduct(ArrayList<String> lst, boolean memoized) {
         long product = 0;
         for (String str : lst) {
-            product = Math.max(product, findProduct(str));
+            if (memoized) {
+                product = Math.max(product, findProductMemoized(str));
+            } else {
+                product = Math.max(product, findProduct(str));
+            }
         }
         return product;
     }
@@ -101,5 +122,30 @@ public class p008 {
             maxProduct = Math.max(maxProduct, product);
         }
         return maxProduct;
+    }
+
+    /** Returns the largest product of DIGIT adjacent numbers in STR.
+     *  Computations are memoized for faster multiplication. */
+    public static long findProductMemoized(String str) {
+        long init = initProduct(str.substring(0, 13)); long maxProduct = init;
+        for (int offset = 1; offset <= str.length() - DIGITS; offset += 1) {
+            long product = init / Character.getNumericValue(str.charAt(offset - 1))
+                           * Character.getNumericValue(str.charAt(offset - 1 + DIGITS));
+            init = product;
+            maxProduct = Math.max(maxProduct, product);
+        }
+        return maxProduct;
+    }
+
+    /** Returns the product of adjacent numbers in STR, where STR is
+     *  a DIGITS-length string. */
+    public static long initProduct(String str) {
+        assert str.length() == DIGITS : "String length should be " + DIGITS
+                                        + ", but was " + str.length();
+        long product = 1;
+        for (int i = 0; i < DIGITS; i += 1) {
+            product *= Character.getNumericValue(str.charAt(i));
+        }
+        return product;
     }
 }
